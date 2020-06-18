@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS cards;
+DROP TYPE IF EXISTS card_status;
+DROP TYPE IF EXISTS card_type;
