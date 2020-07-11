@@ -12,12 +12,12 @@ messagesRouter
         });
     })
     .post(jsonParser, (req, res, next) => {
-        const { message_copy } = req.body;
-        const newMessage = { message_copy };
+        const { message_copy, player_id } = req.query;
+        const newMessage = { message_copy, player_id };
 
         MessagesService.addMessage(req.app.get("db"), newMessage).then(
             (message) => {
-                res.status(201).json("This works");
+                res.status(201).json("Message posted");
             }
         );
     });
