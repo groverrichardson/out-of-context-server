@@ -3,6 +3,7 @@ require("dotenv").config();
 const app = require("./app");
 const { PORT, DB_URL } = require("./config");
 const knex = require("knex");
+const socket = require("socket.io");
 
 const db = knex({
     client: "pg",
@@ -11,6 +12,12 @@ const db = knex({
 
 app.set("db", db);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server listening at http://localhost:${PORT}`);
+});
+
+const io = socket(server);
+
+io.on("connection", function (socket) {
+    console.log("made socket connection");
 });

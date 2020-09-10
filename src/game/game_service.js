@@ -1,15 +1,15 @@
 const GamesService = {
     getGameById(db, id) {
-        return db.select("*").from("game").where("id", "=", id);
+        return db.select('*').from('game').where('id', '=', id);
     },
     addGame(db, newGame) {
-        return db.insert(newGame).into("game").returning("id");
+        return db.insert(newGame).into('game').returning('id');
     },
     updateGame(db, id, gameUpdates) {
-        return db("game").where("id", "=", id).update(gameUpdates);
+        return db('game').where('id', '=', id).update(gameUpdates);
     },
     clearUsers(db, id, gameUpdates) {
-        return db("game").where("id", "=", id).update(gameUpdates);
+        return db('game').where('id', '=', id).update(gameUpdates);
     },
     insertCardId(db, id, cardId) {
         return db.raw(
@@ -22,10 +22,20 @@ const GamesService = {
         );
     },
     updatePlayer(db, playerId, playerUpdates) {
-        return db("player").where(("id", "=", playerId).update(playerUpdates));
+        return db('player').where(('id', '=', playerId).update(playerUpdates));
     },
     addPlayer(db, player_stats) {
-        return db.insert(player_stats).into("players").returning("id");
+        return db.insert(player_stats).into('players').returning('id');
+    },
+    getAllPlayers(db, game_id) {
+        return db.select('*').from('players').where('game_id', '=', game_id);
+    },
+    getResponses(db, game_id, round) {
+        return db
+            .select('*')
+            .from('answers')
+            .where('game_id', '=', game_id)
+            .where('round', '=', round);
     },
 };
 

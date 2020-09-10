@@ -1,15 +1,18 @@
-const express = require("express");
-const PlayersService = require("./players_service");
+const express = require('express');
+const PlayersService = require('./players_service');
 const jsonParser = express.json();
 
 const playersRouter = express.Router();
 
 playersRouter
-    .route("/players")
+    .route('/players')
     .get((req, res, next) => {
-        PlayersService.getAllPlayers(req.app.get("db")).then((players) => {
-            res.json(players);
-        });
+        const { game_id } = req.query;
+        PlayersService.getAllPlayersFromGame(req.app.get('db'), game_id).then(
+            (players) => {
+                res.json(players);
+            }
+        );
     })
     .post(jsonParser, (req, res, next) => {
         const { player_name, points, player_status, game_id } = req.query;
@@ -17,31 +20,33 @@ playersRouter
         const requiredInputs = { player_name, points, player_status };
 
         for (const [key, value] of Object.entries(requiredInputs)) {
-            if (value == null || value == "") {
+            if (value == null || value == '') {
                 return res.status(400).json({
                     error: { message: `Missing ${key}` },
                 });
             }
         }
 
-        if (player_status != ("Judge" || "Player")) {
+        if (player_status !== 'Judge' && player_status !== 'Player') {
             return res.status(400).json({
                 error: {
-                    message: `Player status must be either Judge or Player.`,
+                    message: `Player status must be either Judge or Player. Received: ${player_status}`,
                 },
             });
+        } else {
+            PlayersService.addPlayer(req.app.get('db'), newPlayer).then(
+                (response) => {
+                    res.status(201).json(response);
+                }
+            );
         }
-
-        PlayersService.addPlayer(req.app.get("db"), newPlayer).then(() => {
-            res.status(201).json("Player added");
-        });
     });
 
 playersRouter
-    .route("/players/:playerId")
+    .route('/players/:playerId')
     .get((req, res, next) => {
         PlayersService.getPlayerById(
-            req.app.get("db"),
+            req.app.get('db'),
             req.params.playerId
         ).then((player) => {
             res.json(player);
@@ -52,11 +57,11 @@ playersRouter
         const playerUpdates = { player_name, points, player_status, game_id };
 
         PlayersService.updatePlayer(
-            req.app.get("db"),
+            req.app.get('db'),
             req.params.playerId,
             playerUpdates
         ).then(() => {
-            res.status(201).json("Player updated");
+            res.status(201).json('Player updated');
         });
     });
 
