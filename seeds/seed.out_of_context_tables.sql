@@ -5,4 +5,4 @@ TRUNCATE
     cards
     RESTART IDENTITY CASCADE;
 
-COPY cards FROM '/Users/Grover/Dropbox (Grove Of All Trades)/Development/Practice/out-of-context/assets/out_of_context_card_data.csv' DELIMITER ',' CSV HEADER;
+COPY cards FROM '../assets/seed.out_of_context_tables.sql' DELIMITER ',' CSV HEADER;
