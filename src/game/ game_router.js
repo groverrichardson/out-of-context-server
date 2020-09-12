@@ -69,6 +69,7 @@ gameRouter
     .route('/game/:uuid')
     .post((req, res, next) => {
         const {
+            active_card,
             game_status,
             round,
             number_of_players,
@@ -81,6 +82,7 @@ gameRouter
             game_status,
             number_of_players,
             round,
+            active_card,
         };
 
         if (cards_played && !player_ids) {
@@ -91,6 +93,8 @@ gameRouter
             );
 
             const newCards = cards_played.split(',');
+
+            console.log(newCards);
 
             newCards.forEach((cardId) => {
                 GamesService.insertCardId(
@@ -216,7 +220,6 @@ gameRouter.route('/create-game').post((req, res, next) => {
             GameService.addPlayer(req.app.get('db'), playerStats).then(
                 (playerId) => {
                     playerStats.player_id = parseInt(playerId);
-                    // gameUpdates.current_judge = parsetInt(playerId);
                     GameService.updateGame(
                         req.app.get('db'),
                         playerStats.game_id,

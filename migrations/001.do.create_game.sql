@@ -9,5 +9,6 @@ CREATE TABLE IF NOT EXISTS game (
     game_status game_status NOT NULL,
     round INTEGER DEFAULT 1 NOT NULL,
     number_of_players INTEGER DEFAULT 4,
-    game_name TEXT NOT NULL
+    game_name TEXT NOT NULL,
+    cards_played INTEGER[]
 );
