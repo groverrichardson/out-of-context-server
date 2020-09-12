@@ -17,5 +17,12 @@ CREATE TABLE IF NOT EXISTS cards (
     card_copy TEXT NOT NULL,
     card_status card_status NOT NULL,
     thread_count INTEGER NOT NULL,
-    card_count INTEGER NOT NULL
+    message_count INTEGER NOT NULL
 );
+
+INSERT INTO cards(id,card_type,card_copy,card_status,thread_count,message_count) VALUES (1,'Regular','Someone spills hot oil on you, you scream...','Not Drawn',1,2);
+INSERT INTO cards(id,card_type,card_copy,card_status,thread_count,message_count) VALUES (2,'Regular','You arrive at the emergency room, they ask why you''re here. You calmly say…','Not Drawn',11,6);
+INSERT INTO cards(id,card_type,card_copy,card_status,thread_count,message_count) VALUES (3,'Regular','You meet your tinder match, they look at you and say…','Not Drawn',8,12);
+INSERT INTO cards(id,card_type,card_copy,card_status,thread_count,message_count) VALUES (4,'Regular','You''re waiting to hear about your newly born baby, the doctor comes out and says…','Not Drawn',4,1);
+INSERT INTO cards(id,card_type,card_copy,card_status,thread_count,message_count) VALUES (5,'Regular','You ask siri where the nearest coffee shop is, she replies…','Not Drawn',3,4);
+INSERT INTO cards(id,card_type,card_copy,card_status,thread_count,message_count) VALUES (6,'Regular','You ask your crush to be exclusive, they reply…','Not Drawn',7,9);
