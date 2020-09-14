@@ -4,7 +4,7 @@ const CardsService = {
     },
     getCardById(db, id) {
         return db
-            .select('card_type', 'card_copy', 'thread_count', 'card_count')
+            .select('card_type', 'card_copy', 'thread_count', 'message_count')
             .from('cards')
             .where('id', '=', id);
     },
