@@ -183,7 +183,7 @@ gameRouter.route('/create-game').post((req, res, next) => {
         return Math.floor(Math.random() * Math.floor(max) + 1);
     }
 
-    const active_card = randomNumber(3);
+    const active_card = randomNumber(43);
 
     const gameStats = {
         game_status,
