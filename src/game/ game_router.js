@@ -1,6 +1,6 @@
 const express = require('express');
 const GameService = require('./game_service');
-const GamesService = require('./game_service');
+const CardsService = require('../cards/cards_service');
 
 const gameRouter = express.Router();
 const jsonParser = express.json();
@@ -195,7 +195,7 @@ gameRouter.route('/create-game').post((req, res, next) => {
 
     const playerStats = { player_name };
 
-    if (game_status != ('Active' || 'Not Active')) {
+    if (game_status != 'Active' && game_status != 'Not Active') {
         return res.status(400).json({
             error: { message: 'Game status must be Active or Not Active' },
         });
@@ -238,38 +238,23 @@ gameRouter.route('/create-game').post((req, res, next) => {
 });
 
 gameRouter.route('/dashboard').get((req, res, next) => {
-    const { game_id } = req.query;
-    const gameDetails = {
-        players: [],
-        active_card: '',
-        active_wild_card: '',
-        round: null,
-        responses: [],
-    };
+    let { game_id } = req.query;
+    let gameDetails = { players: [] };
 
     Promise.all([
-        GameService.getAllPlayers(req.app.get('db'), game_id).then((response) =>
-            response.forEach((player) => gameDetails.players.push(player))
-        ),
-        GameService.getGameById(req.app.get('db'), game_id)
-            .then((response) => {
-                gameDetails.active_card = response[0].active_card;
-                if (response[0].active_wild_card !== null) {
-                    gameDetails.active_wild_card = response[0].active_wild_card;
-                }
-                gameDetails.round = response[0].round;
-            })
-            .then(() =>
-                GameService.getResponses(
-                    req.app.get('db'),
-                    game_id,
-                    gameDetails.round
-                ).then((response) =>
-                    response.forEach((answer) =>
-                        gameDetails.responses.push(answer)
-                    )
-                )
-            ),
-    ]).then(() => res.status(201).json(gameDetails));
+        GameService.getGameById(req.app.get('db'), game_id).then((gameData) => {
+            gameDetails.active_card = gameData[0].active_card;
+            gameDetails = {
+                active_card: gameData[0].active_card,
+                round: gameData[0].round,
+                number_of_players: gameData[0].number_of_players,
+                cards_played: gameData[0].cards_played,
+                current_judge: gameData[0].current_judge,
+                game_status: gameData[0].game_status,
+            };
+        }),
+    ]).then(() => {
+        return res.status(201).json(gameDetails);
+    });
 });
 module.exports = gameRouter;
