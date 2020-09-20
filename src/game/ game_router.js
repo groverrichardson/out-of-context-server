@@ -94,8 +94,6 @@ gameRouter
 
             const newCards = cards_played.split(',');
 
-            console.log(newCards);
-
             newCards.forEach((cardId) => {
                 GamesService.insertCardId(
                     req.app.get('db'),
@@ -177,7 +175,7 @@ gameRouter
     });
 
 gameRouter.route('/create-game').post((req, res, next) => {
-    const { game_status, game_name, player_name } = req.query;
+    const { game_status, player_name } = req.query;
 
     function randomNumber(max) {
         return Math.floor(Math.random() * Math.floor(max) + 1);
@@ -187,7 +185,6 @@ gameRouter.route('/create-game').post((req, res, next) => {
 
     const gameStats = {
         game_status,
-        game_name,
         active_card,
     };
 
@@ -214,6 +211,7 @@ gameRouter.route('/create-game').post((req, res, next) => {
             playerStats.points = 0;
             playerStats.player_status = 'Judge';
             playerStats.game_id = parseInt(id);
+            playerStats.answer_submitted = false;
         }),
     ])
         .then(() =>
@@ -251,6 +249,7 @@ gameRouter.route('/dashboard').get((req, res, next) => {
                 cards_played: gameData[0].cards_played,
                 current_judge: gameData[0].current_judge,
                 game_status: gameData[0].game_status,
+                answerSubmitted: gameData[0].answerSubmitted,
             };
         }),
     ]).then(() => {

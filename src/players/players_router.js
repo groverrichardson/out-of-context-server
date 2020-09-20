@@ -15,9 +15,33 @@ playersRouter
         );
     })
     .post(jsonParser, (req, res, next) => {
-        const { player_name, points, player_status, game_id } = req.query;
-        const newPlayer = { player_name, points, player_status, game_id };
-        const requiredInputs = { player_name, points, player_status };
+        const {
+            player_name,
+            points,
+            player_status,
+            game_id,
+            answer_submitted,
+        } = req.query;
+
+        let newAnswerSubmit = false;
+
+        if (answer_submitted !== 'false') {
+            newAnswerSubmit = true;
+        }
+
+        const newPlayer = {
+            player_name,
+            points,
+            player_status,
+            game_id,
+            answer_submitted: newAnswerSubmit,
+        };
+        const requiredInputs = {
+            player_name,
+            points,
+            player_status,
+            answer_submitted,
+        };
 
         for (const [key, value] of Object.entries(requiredInputs)) {
             if (value == null || value == '') {
@@ -53,8 +77,20 @@ playersRouter
         });
     })
     .post(jsonParser, (req, res, next) => {
-        const { player_name, points, player_status, game_id } = req.query;
-        const playerUpdates = { player_name, points, player_status, game_id };
+        const {
+            player_name,
+            points,
+            player_status,
+            game_id,
+            answer_submitted,
+        } = req.query;
+        const playerUpdates = {
+            player_name,
+            points,
+            player_status,
+            game_id,
+            answer_submitted,
+        };
 
         PlayersService.updatePlayer(
             req.app.get('db'),
